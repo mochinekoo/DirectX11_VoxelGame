@@ -1,11 +1,13 @@
 #pragma once
 #include "MochinekoEngine/BaseObject.h"
 #include "MochinekoEngine/Box.h"
+#include "MochinekoEngine/FBX.h"
 
 class Player : public BaseObject{
 private:
 	Box* cmdBox_;
 	bool isCmdOpen_;
+	FBX* modelFBX_;
 public:
 
 	Player();
