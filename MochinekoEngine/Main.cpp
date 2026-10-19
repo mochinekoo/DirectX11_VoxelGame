@@ -1,0 +1,267 @@
+﻿#include <Windows.h>
+#include "DX3DManager.h"
+#include "Framework.h"
+#include "FBX.h"
+#include "ImGUI/imgui.h"
+#include "ImGUI/imgui_impl_win32.h"
+#include "ImGUI/imgui_impl_dx11.h"
+#include "ObjectManager.h"
+#include "SceneManager.h"
+#include "SoundManager.h"
+#include "Camera.h"
+#include "CameraManager.h"
+#include "Image.h"
+#include "Box.h"
+#include "DX2DManager.h"
+#include "FontText.h"
+#include "InputManager.h"
+#include "DX3DManager.h"
+
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "Winmm.lib")
+
+namespace {
+	inline bool canShowBoxWindow_ = false;
+}
+
+namespace MochinekoEngine {
+	inline float backgroundColor_[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	inline HWND mainWindowHandle_ = {};
+	inline bool canShutdown_ = false;
+	float deltaTime_ = 0.0f;
+
+	HWND GetGameWindowHandle() {
+		return mainWindowHandle_;
+	}
+
+	bool CanShutdown() {
+		return canShutdown_;
+	}
+
+	void Shutdown() {
+		canShutdown_ = true;
+	}
+
+	float GetDeltaTime() {
+		return deltaTime_;
+	}
+
+	Color GetBackgroundColor() {
+		Color color = Color();
+		color.r_ = backgroundColor_[0];
+		color.g_ = backgroundColor_[1];
+		color.b_ = backgroundColor_[2];
+		color.a_ = backgroundColor_[3];
+		return color;
+	}
+
+	void SetBackgroundColor(const Color& color) {
+		backgroundColor_[0] = color.r_;
+		backgroundColor_[1] = color.g_;
+		backgroundColor_[2] = color.b_;
+		backgroundColor_[3] = color.a_;
+	}
+}
+
+using namespace MochinekoEngine;
+using namespace DX3DManager;
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+void InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+void InitImGUI();
+void DrawDebugImGUI();
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+	InitWindow(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
+	InitDX3D();
+	InitImGUI();
+	InputManager::Init(hInstance, MochinekoEngine::GetGameWindowHandle());
+	SoundManager::Init();
+	ObjectManager::Init();
+	SceneManager::Init();
+	CameraManager::Init();
+	DX2DManager::Init();
+
+	MochinekoEngineResource::Init();
+
+	//const std::string fontName, const int fontSize, const std::string& text, const Color& color) 
+	FontText* text = new FontText(L"メイリオ", 30, L"ああ", {0.0f, 0.0f, 0.0f, 1.0f});
+	text->Init();
+
+
+	MSG msg = {};
+	while (msg.message != WM_QUIT) {
+		if (MochinekoEngine::CanShutdown()) {
+			break;
+		}
+
+		if (PeekMessage(&msg, NULL, 0U, 0U, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			ID3D11RenderTargetView* renderTargetView = GetRTV();
+
+			EnableZDepthWrite();
+			GetDeviceContext()->ClearRenderTargetView(renderTargetView,  backgroundColor_);
+			GetDeviceContext()->ClearDepthStencilView(GetDepthView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+			static DWORD beforeTime = timeGetTime();
+			DWORD afterTime = timeGetTime();
+			DWORD diffTime = afterTime - beforeTime;
+
+			beforeTime = afterTime;
+			MochinekoEngine::deltaTime_ = (float)diffTime / 1000;
+
+			ImGuiIO& io = ImGui::GetIO();
+			ImGui_ImplDX11_NewFrame();
+			ImGui_ImplWin32_NewFrame();
+			ImGui::NewFrame();
+
+			HRESULT result = GetDevice()->GetDeviceRemovedReason();
+			if (result != S_OK) {
+				wchar_t* buffer = nullptr;
+
+				DWORD size = FormatMessageW(
+					FORMAT_MESSAGE_ALLOCATE_BUFFER |
+					FORMAT_MESSAGE_FROM_SYSTEM |
+					FORMAT_MESSAGE_IGNORE_INSERTS,
+					nullptr,
+					result,
+					MAKELANGID(LANG_JAPANESE, SUBLANG_DEFAULT),
+					reinterpret_cast<LPWSTR>(&buffer),
+					0,
+					nullptr
+				);
+
+				std::wstring message(buffer, size);
+				LocalFree(buffer);
+
+				MessageBox(NULL, message.c_str(), NULL, MB_OK);
+				ExitProcess(-1);
+				return -1;
+			}
+			
+
+			InputManager::Update();
+			SceneManager::Update();
+			ObjectManager::Update();
+
+			text->Draw();
+
+			DrawDebugImGUI();
+			SoundManager::DrawDebugImGUI();
+
+			ImGui::EndFrame();
+			ImGui::Render();
+			ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+			if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+				ImGui::UpdatePlatformWindows();
+				ImGui::RenderPlatformWindowsDefault();
+			}
+
+			GetSwapChain()->Present(1, 0);
+		}
+	}
+
+	return 0;
+}
+
+void InitWindow(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+	WNDCLASSEXW wndClass = {};
+	wndClass.cbSize = sizeof(WNDCLASSEXW);
+	wndClass.hInstance = hInstance;
+	wndClass.lpszClassName = L"Game";
+	wndClass.lpfnWndProc = WndProc;
+	wndClass.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+	wndClass.hIconSm = LoadIcon(nullptr, IDI_WINLOGO);
+	wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	wndClass.lpszMenuName = NULL;
+	RegisterClassExW(&wndClass);
+
+	mainWindowHandle_ = CreateWindowW(
+		L"Game",
+		L"GameTitle",
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		1280, 720,
+		NULL,
+		NULL,
+		hInstance,
+		NULL
+	);
+
+	ShowWindow(mainWindowHandle_, nCmdShow);
+	UpdateWindow(mainWindowHandle_);
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, message, wParam, lParam)) {
+		return true;
+	}
+
+	switch (message) {
+		case WM_DESTROY: {
+			PostQuitMessage(0);
+			break;
+		}
+		case WM_COMMAND: {
+			switch (LOWORD(wParam)) {}
+			break;
+		}
+	}
+	return DefWindowProc(hwnd, message, wParam, lParam);
+}
+
+void InitImGUI() {
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
+	ImGui::StyleColorsDark();
+	ImGui_ImplWin32_Init(mainWindowHandle_);
+	ID3D11Device* device = (ID3D11Device*)GetDevice();
+	ID3D11DeviceContext* deviceContext = (ID3D11DeviceContext*)GetDeviceContext();
+	ImGui_ImplDX11_Init(device, deviceContext);
+
+	io.Fonts->AddFontFromFileTTF(
+		"C:/Windows/Fonts/meiryo.ttc",
+		18.0f,
+		nullptr,
+		io.Fonts->GetGlyphRangesJapanese()
+	);
+}
+
+void DrawDebugImGUI() {
+	BaseScene* currentScene = SceneManager::GetCurrentScene();
+	Camera* currentCamera = CameraManager::GetCurrentCamera();
+	auto leftTilt = InputManager::GetControllerTiltLeft();
+
+	ImGui::Begin("DebugInfo");
+	ImGui::Text("DeltaTime: %2.2f", MochinekoEngine::GetDeltaTime());
+	ImGui::Text("Mouse Left: %d, Mouse Center: %d, Mouse Right: %d", InputManager::CheckPushMouse(0), InputManager::CheckPushMouse(1), InputManager::CheckPushMouse(2));
+	ImGui::Text("Mouse Left: %d, Mouse Center: %d, Mouse Right: %d", InputManager::CheckDownMouse(0), InputManager::CheckDownMouse(1), InputManager::CheckDownMouse(2));
+	ImGui::Text("Xbox %2.2f, %2.2f", InputManager::GetControllerLeftTrigger(), InputManager::GetControllerRightTrigger());
+	ImGui::Text("XBox Tilt: X[%2.2f], Y[%2.2f]", leftTilt.x, leftTilt.y);
+	ImGui::Text("Xbox A Key: %d", InputManager::IsControllerButtonPush(XINPUT_GAMEPAD_A));
+	if (ImGui::Button("Start")) {
+		InputManager::StartControllerVibration(65535, 65535);
+	}
+	if (ImGui::Button("Stop")) {
+		InputManager::StopControllerVibration();
+	}
+	ImGui::Text("CurrentScene: %s", currentScene == nullptr ? "(nullptr)" : currentScene->GetName().c_str());
+	ImGui::Text("ObjectCount: %d", ObjectManager::GetAllObject().size());
+	ImGui::Text("CurrentCamera: %s", currentCamera == nullptr ? "(nullptr)" : currentCamera->GetName().c_str());
+	ImGui::SliderFloat("Camera Postion X", &currentCamera->postion_.x, 0.0f, 10.0f);
+	ImGui::SliderFloat("Camera Postion Y", &currentCamera->postion_.y, 0.0f, 10.0f);
+	ImGui::SliderFloat("Camera Postion Z", &currentCamera->postion_.z, 0.0f, 10.0f);
+	ImGui::SliderFloat("Camera Target X", &currentCamera->target_.x, 0.0f, 10.0f);
+	ImGui::SliderFloat("Camera Target Y", &currentCamera->target_.y, 0.0f, 10.0f);
+	ImGui::SliderFloat("Camera Target Z", &currentCamera->target_.z, 0.0f, 10.0f);
+
+	ImGui::End();
+}

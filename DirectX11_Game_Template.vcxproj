@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MochinekoEngine\BaseCollider.h" />
+    <ClInclude Include="MochinekoEngine\BaseObject.h" />
+    <ClInclude Include="MochinekoEngine\BaseScene.h" />
+    <ClInclude Include="MochinekoEngine\Box.h" />
+    <ClInclude Include="MochinekoEngine\BoxCollider.h" />
+    <ClInclude Include="MochinekoEngine\Camera.h" />
+    <ClInclude Include="MochinekoEngine\CameraManager.h" />
+    <ClInclude Include="MochinekoEngine\DebugScene.h" />
+    <ClInclude Include="MochinekoEngine\DX2DManager.h" />
+    <ClInclude Include="MochinekoEngine\DX3DManager.h" />
+    <ClInclude Include="MochinekoEngine\FBX.h" />
+    <ClInclude Include="MochinekoEngine\FbxChild.h" />
+    <ClInclude Include="MochinekoEngine\FontText.h" />
+    <ClInclude Include="MochinekoEngine\Framework.h" />
+    <ClInclude Include="MochinekoEngine\Image.h" />
+    <ClInclude Include="MochinekoEngine\ImageButton.h" />
+    <ClInclude Include="MochinekoEngine\ImageManager.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imconfig.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_impl_dx10.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_impl_dx11.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_impl_dx12.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_impl_dx9.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_impl_win32.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_internal.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imgui_stdlib.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imstb_textedit.h" />
+    <ClInclude Include="MochinekoEngine\ImGUI\imstb_truetype.h" />
+    <ClInclude Include="MochinekoEngine\InputManager.h" />
+    <ClInclude Include="MochinekoEngine\MathUtil.h" />
+    <ClInclude Include="MochinekoEngine\ModelManager.h" />
+    <ClInclude Include="MochinekoEngine\ObjectManager.h" />
+    <ClInclude Include="MochinekoEngine\SceneManager.h" />
+    <ClInclude Include="MochinekoEngine\ShaderManager.h" />
+    <ClInclude Include="MochinekoEngine\SoundManager.h" />
+    <ClInclude Include="MochinekoEngine\SphereCollider.h" />
+    <ClInclude Include="MochinekoEngine\Texture.h" />
+    <ClInclude Include="MochinekoEngine\Transform.h" />
+    <ClInclude Include="MochinekoEngine\VideoData.h" />
+    <ClInclude Include="MochinekoEngine\VideoObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MochinekoEngine\Box.cpp" />
+    <ClCompile Include="MochinekoEngine\BoxCollider.cpp" />
+    <ClCompile Include="MochinekoEngine\CameraManager.cpp" />
+    <ClCompile Include="MochinekoEngine\DebugScene.cpp" />
+    <ClCompile Include="MochinekoEngine\DX2DManager.cpp" />
+    <ClCompile Include="MochinekoEngine\DX3DManager.cpp" />
+    <ClCompile Include="MochinekoEngine\FBX.cpp" />
+    <ClCompile Include="MochinekoEngine\FbxChild.cpp" />
+    <ClCompile Include="MochinekoEngine\FontText.cpp" />
+    <ClCompile Include="MochinekoEngine\Framework.cpp" />
+    <ClCompile Include="MochinekoEngine\Image.cpp" />
+    <ClCompile Include="MochinekoEngine\ImageButton.cpp" />
+    <ClCompile Include="MochinekoEngine\ImageManager.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_impl_dx10.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_impl_dx11.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_impl_dx12.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_impl_dx9.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_stdlib.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_tables.cpp" />
+    <ClCompile Include="MochinekoEngine\ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="MochinekoEngine\InputManager.cpp" />
+    <ClCompile Include="MochinekoEngine\Main.cpp" />
+    <ClCompile Include="MochinekoEngine\ModelManager.cpp" />
+    <ClCompile Include="MochinekoEngine\ObjectManager.cpp" />
+    <ClCompile Include="MochinekoEngine\SceneManager.cpp" />
+    <ClCompile Include="MochinekoEngine\ShaderManager.cpp" />
+    <ClCompile Include="MochinekoEngine\SoundManager.cpp" />
+    <ClCompile Include="MochinekoEngine\SphereCollider.cpp" />
+    <ClCompile Include="MochinekoEngine\Texture.cpp" />
+    <ClCompile Include="MochinekoEngine\VideoData.cpp" />
+    <ClCompile Include="MochinekoEngine\VideoObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="MochinekoEngine\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="MochinekoEngine\VertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{5f546530-b6f3-47ad-adee-83c1fba615d3}</ProjectGuid>
+    <RootNamespace>DirectX11GameTemplate</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>DirectX11_VoxelGame</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.9\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.9\lib\x64\debug</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
