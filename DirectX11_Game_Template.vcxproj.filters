@@ -37,6 +37,9 @@
     <Filter Include="MochinekoEngine\Util">
       <UniqueIdentifier>{736c3d9b-6723-48b1-b809-ab3975827667}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Manager">
+      <UniqueIdentifier>{8b09d1ee-5278-4bc1-bdcf-a385b66b9864}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MochinekoEngine\BaseObject.h">
@@ -162,6 +165,12 @@
     <ClInclude Include="MochinekoEngine\InputManager.h">
       <Filter>MochinekoEngine\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageManager.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MochinekoEngine\CameraManager.cpp">
@@ -268,6 +277,12 @@
     </ClCompile>
     <ClCompile Include="MochinekoEngine\InputManager.cpp">
       <Filter>MochinekoEngine\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageManager.cpp">
+      <Filter>Source\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
