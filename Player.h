@@ -9,6 +9,8 @@ private:
 	bool isCmdOpen_;
 	FBX* modelFBX_;
 	bool isThree_;
+
+	bool isJumping_;
 public:
 
 	Player();

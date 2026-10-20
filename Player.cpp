@@ -16,6 +16,7 @@ Player::Player()
 	: BaseObject("Player") {
 	cmdBox_ = nullptr;
 	isCmdOpen_ = false;
+	isJumping_ = false;
 }
 
 Player::~Player() {
@@ -68,7 +69,9 @@ void Player::Update() {
 
 	}
 
-
+	///
+	/// カメラの視点切り替え
+	/// 
 	if (InputManager::CheckDownKey(DIK_F5)) {
 		isThree_ = !isThree_;
 
@@ -84,6 +87,40 @@ void Player::Update() {
 		}
 	}
 
+	///
+	/// ジャンプ
+	/// 
+	const float groundY = 0.0f;
+	const float jumpPower = 1.0f;
+	const float gravity = 0.05f;
+	if (InputManager::CheckDownKey(DIK_SPACE)) {
+		isJumping_ = true;
+		SetVelocity({0, jumpPower, 0});
+	}
+	if (isJumping_) {
+		transform_.velocity_.y -= gravity;
+		playerLocVec = {playerLoc.x, playerLoc.y + transform_.velocity_.y, playerLoc.z};
+
+		if (!isThree_) {
+			cameraLocVec = {XMVectorGetX(playerLocVec), XMVectorGetY(playerLocVec) + 2, XMVectorGetZ(playerLocVec) + 2};
+			cameraTargetVec = { XMVectorGetX(playerLocVec), XMVectorGetY(playerLocVec), XMVectorGetZ(playerLocVec) + 5 };
+		}
+		else {
+			cameraLocVec = { XMVectorGetX(playerLocVec), XMVectorGetY(playerLocVec) + 5, XMVectorGetZ(playerLocVec) - 5 };
+			cameraTargetVec = { XMVectorGetX(playerLocVec), XMVectorGetY(playerLocVec), XMVectorGetZ(playerLocVec) };
+		}
+
+
+		if (DirectX::XMVectorGetY(playerLocVec) < groundY) {
+			transform_.velocity_.y = 0;
+			playerLocVec = { XMVectorGetX(playerLocVec), groundY, XMVectorGetZ(playerLocVec) };
+			isJumping_ = false;
+		}
+	}
+
+	///
+	/// 移動
+	/// 
 	if (InputManager::CheckPushKey(DIK_W)) {
 		playerLocVec += XMVectorScale(direction, speed * deltaTime);
 		cameraLocVec += XMVectorScale(direction, speed * deltaTime);
@@ -105,6 +142,9 @@ void Player::Update() {
 		cameraTargetVec += XMVectorScale(rightDirection, speed * deltaTime);
 	}
 
+	///
+	/// 回転
+	/// 
 	if (InputManager::CheckPushKey(DIK_LEFT)) {
 		transform_.rotation_.y -= XMConvertToRadians(1.0f);
 	}
