@@ -4,6 +4,7 @@
 #include "MessageManager.h"
 #include <string>
 #include "MochinekoEngine/ModelManager.h"
+#include "MochinekoEngine/CameraManager.h"
 
 using namespace DirectX;
 
@@ -25,8 +26,19 @@ void Player::Init() {
 	cmdBox_->SetLocation({0, 720 - CMD_BOX_HEIGHT, 0});
 	cmdBox_->Init();
 
-	modelFBX_ = new FBX("player.fbx");
+	isThree_ = false;
+
+	modelFBX_ = new FBX("playerTest.fbx");
 	modelFBX_->Init();
+	SetTransform(modelFBX_->GetTransform());
+
+	SetLocation({0, 0.0, 0});
+
+	// デフォルトでは1人称
+	XMFLOAT3 playerLoc = transform_.location_;
+	Camera* camera = CameraManager::GetCurrentCamera();
+	camera->postion_ = {playerLoc.x, playerLoc.y + 2, playerLoc.z + 2};
+	camera->target_ = {playerLoc.x, playerLoc.y, playerLoc.z + 5 };
 
 	SetTag("mochineko");
 }
@@ -39,10 +51,15 @@ void Player::Update() {
 	const float speed = 1.0f;
 	float deltaTime = MochinekoEngine::GetDeltaTime();
 
+	Camera* camera = CameraManager::GetCurrentCamera();
+	XMFLOAT3 playerLoc = transform_.location_;
+
 	XMVECTOR forward = XMVectorSet(0, 0, 1, 0);
 	XMMATRIX rotation = XMMatrixRotationY(transform_.rotation_.y);
 	XMVECTOR direction = XMVector3Normalize(XMVector3TransformNormal(forward, rotation));
-	XMVECTOR location = XMLoadFloat3(&transform_.location_);
+	XMVECTOR playerLocVec = XMLoadFloat3(&transform_.location_);
+	XMVECTOR cameraLocVec = XMLoadFloat3(&camera->postion_);
+	XMVECTOR cameraTargetVec = XMLoadFloat3(&camera->target_);
 
 	XMVECTOR right = XMVectorSet(1, 0, 0, 0);
 	XMVECTOR rightDirection = XMVector3Normalize(XMVector3TransformNormal(right, rotation));
@@ -51,21 +68,41 @@ void Player::Update() {
 
 	}
 
-	if (InputManager::CheckDownKey(DIK_F5)) {
 
+	if (InputManager::CheckDownKey(DIK_F5)) {
+		isThree_ = !isThree_;
+
+		if (isThree_) {
+			// 3人称
+			cameraLocVec = { playerLoc.x, playerLoc.y + 5, playerLoc.z - 5 };
+			cameraTargetVec = { playerLoc.x, playerLoc.y, playerLoc.z };
+		}
+		else {
+			// 1人称
+			cameraLocVec = { playerLoc.x, playerLoc.y + 2, playerLoc.z + 2 };
+			cameraTargetVec = { playerLoc.x, playerLoc.y, playerLoc.z + 5 };
+		}
 	}
 
 	if (InputManager::CheckPushKey(DIK_W)) {
-		location += XMVectorScale(direction, speed * deltaTime);
+		playerLocVec += XMVectorScale(direction, speed * deltaTime);
+		cameraLocVec += XMVectorScale(direction, speed * deltaTime);
+		cameraTargetVec += XMVectorScale(direction, speed * deltaTime);
 	}
 	if (InputManager::CheckPushKey(DIK_S)) {
-		location -= XMVectorScale(direction, speed * deltaTime);
+		playerLocVec -= XMVectorScale(direction, speed * deltaTime);
+		cameraLocVec -= XMVectorScale(direction, speed * deltaTime);
+		cameraTargetVec -= XMVectorScale(direction, speed * deltaTime);
 	}
 	if (InputManager::CheckPushKey(DIK_A)) {
-		location -= XMVectorScale(rightDirection, speed * deltaTime);
+		playerLocVec -= XMVectorScale(rightDirection, speed * deltaTime);
+		cameraLocVec -= XMVectorScale(rightDirection, speed * deltaTime);
+		cameraTargetVec -= XMVectorScale(rightDirection, speed * deltaTime);
 	}
 	if (InputManager::CheckPushKey(DIK_D)) {
-		location += XMVectorScale(rightDirection, speed * deltaTime);
+		playerLocVec += XMVectorScale(rightDirection, speed * deltaTime);
+		cameraLocVec += XMVectorScale(rightDirection, speed * deltaTime);
+		cameraTargetVec += XMVectorScale(rightDirection, speed * deltaTime);
 	}
 
 	if (InputManager::CheckPushKey(DIK_LEFT)) {
@@ -75,7 +112,9 @@ void Player::Update() {
 		transform_.rotation_.y += XMConvertToRadians(1.0f);
 	}
 
-	XMStoreFloat3(&transform_.location_, location);
+	XMStoreFloat3(&transform_.location_, playerLocVec);
+	XMStoreFloat3(&camera->postion_, cameraLocVec);
+	XMStoreFloat3(&camera->target_, cameraTargetVec);
 
 	// UI描画
 	if (cmdBox_ != nullptr) {

@@ -78,9 +78,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InitImGUI();
 	InputManager::Init(hInstance, MochinekoEngine::GetGameWindowHandle());
 	SoundManager::Init();
+	CameraManager::Init();
 	ObjectManager::Init();
 	SceneManager::Init();
-	CameraManager::Init();
 	DX2DManager::Init();
 
 	UserResource::Init();

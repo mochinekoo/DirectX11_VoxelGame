@@ -8,6 +8,7 @@ private:
 	Box* cmdBox_;
 	bool isCmdOpen_;
 	FBX* modelFBX_;
+	bool isThree_;
 public:
 
 	Player();
