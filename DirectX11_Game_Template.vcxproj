@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MapManager.h" />
     <ClInclude Include="MessageManager.h" />
     <ClInclude Include="MochinekoEngine\BaseCollider.h" />
     <ClInclude Include="MochinekoEngine\BaseObject.h" />
@@ -62,8 +63,10 @@
     <ClInclude Include="MochinekoEngine\VideoData.h" />
     <ClInclude Include="MochinekoEngine\VideoObject.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="UserResource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="MessageManager.cpp" />
     <ClCompile Include="MochinekoEngine\Box.cpp" />
     <ClCompile Include="MochinekoEngine\BoxCollider.cpp" />

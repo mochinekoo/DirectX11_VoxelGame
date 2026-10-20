@@ -15,7 +15,7 @@
 #include "DX2DManager.h"
 #include "FontText.h"
 #include "InputManager.h"
-#include "DX3DManager.h"
+#include "../UserResource.h"
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "Winmm.lib")
@@ -82,6 +82,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SceneManager::Init();
 	CameraManager::Init();
 	DX2DManager::Init();
+
+	UserResource::Init();
 
 	MochinekoEngineResource::Init();
 

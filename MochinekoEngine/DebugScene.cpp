@@ -8,6 +8,9 @@
 #include "VideoObject.h"
 #include "../Player.h"
 #include "../MessageManager.h"
+#include "ModelManager.h"
+#include "../UserResource.h"
+#include "../MapManager.h"
 
 using namespace DX3DManager;
 
@@ -18,15 +21,17 @@ void DebugScene::Init() {
 	grid->SetTag("Grid");
 	ObjectManager::AddObject(grid);
 
-	FBX* gizmo = new FBX("MochinekoEngine/Asset/gizmo.fbx", false, false);
+	FBX* gizmo = new FBX("block.fbx", false, false);
 	gizmo->SetTag("Gizmo");
 	gizmo->AddChild(grid);
-	ObjectManager::AddObject(gizmo);
+	//ObjectManager::AddObject(gizmo);
 
 	ObjectManager::AddObject(new Player());
 
 	//VideoObject* video = new VideoObject("a.mp4");
 	//ObjectManager::AddObject(video);
+
+	MapManager::Init();
 }
 
 void DebugScene::Update() {
@@ -34,4 +39,5 @@ void DebugScene::Update() {
 
 void DebugScene::Draw() {
 	MessageManager::Draw();
+	MapManager::Draw();
 }
