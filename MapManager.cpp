@@ -3,7 +3,7 @@
 #include <array>
 
 namespace {
-	std::array<std::array<std::array<BlockData*, 50>, 50>, 50> blockMap_;
+	std::array<std::array<std::array<BlockData*, MAX_MAP_SIZE>, MAX_MAP_SIZE>, MAX_MAP_SIZE> blockMap_;
 
 	FBX* blockFBX_ = nullptr;
 	FBX* subBlockFBX_ = nullptr;
@@ -23,7 +23,8 @@ void MapManager::Init() {
 	SetBlock(BlockType::BLOCK1, 0, 0, 5);
 
 	SetBlock(BlockType::BLOCK, 1, 0, 0);
-	SetBlock(BlockType::BLOCK1, 2, 0, 0);
+	SetBlock(BlockType::BLOCK1, 2, 1, 0);
+	SetBlock(BlockType::BLOCK1, 2, 10, 0);
 	SetBlock(BlockType::BLOCK, 3, 0, 0);
 	SetBlock(BlockType::BLOCK1, 4, 0, 0);
 	SetBlock(BlockType::BLOCK, 5, 0, 0);
@@ -71,4 +72,15 @@ void MapManager::SetBlock(BlockType type, int x, int y, int z) {
 		blockMap_[z][y][x] = nullptr;
 		break;
 	}
+}
+
+bool MapManager::IsHitBlock(float x, float y, float z) {
+	const float half = DRAW_BLOCK_SIZE * 0.5f;
+	int worldX = (int)floorf((x + half) / DRAW_BLOCK_SIZE);
+	int worldY = (int)floorf((y + half) / DRAW_BLOCK_SIZE);
+	int worldZ = (int)floorf((z + half) / DRAW_BLOCK_SIZE);
+	if (worldX < 0 || worldX > MAX_MAP_SIZE || worldY < 0 || worldY > MAX_MAP_SIZE || worldZ < 0 || worldZ > MAX_MAP_SIZE) {
+		return false;
+	}
+	return blockMap_[worldZ][worldY][worldX] != nullptr;
 }

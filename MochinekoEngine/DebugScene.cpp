@@ -21,10 +21,10 @@ void DebugScene::Init() {
 	grid->SetTag("Grid");
 	ObjectManager::AddObject(grid);
 
-	FBX* gizmo = new FBX("block.fbx", false, false);
+	FBX* gizmo = new FBX("test.fbx", false, false);
 	gizmo->SetTag("Gizmo");
-	gizmo->AddChild(grid);
-	//ObjectManager::AddObject(gizmo);
+	//gizmo->AddChild(grid);
+	ObjectManager::AddObject(gizmo);
 
 	ObjectManager::AddObject(new Player());
 
